@@ -1,18 +1,26 @@
-
+    
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
 import pytest
 
-from TestData.HomePageData import HomePageData
+from TestData.HomePageData import HomePage  ## impoting classes from our projet folders
 from pageObjects.HomePage import HomePage
 from utilities.BaseClass import BaseClass
 
 
 class TestHomePage(BaseClass):
+    '''
+        TestHomePage => Child class
+        BaseClass => Parent class
+        inheritance # we are inheriting BaseClass into TestHomePage
+        So all the properties of base class will be available to child
+        All properties or methods will be inherited in child
+    '''
 
     def test_formSubmission(self,getData):
-        log = self.getLogger()
-        homepage= HomePage(self.driver)
+        log = self.getLogger()      ## creating logger object to maintain or write logs
+        ## self.driver we will get from setup fixture which is been used by parent BaseClass
+        homepage= HomePage(self.driver)     ## Creating object of HomePage and passing driver in parameterized contructor
         log.info("first name is "+getData["firstname"])
         homepage.getName().send_keys(getData["firstname"])
         homepage.getEmail().send_keys(getData["lastname"])
@@ -27,7 +35,7 @@ class TestHomePage(BaseClass):
         self.driver.refresh()
 
     ###@pytest.fixture(params=[{"firstname": "Sagar", "lastname":"Sarade", "Gender": "Male"}, {"firstname": "Yusuf", "lastname":"Tamboli", "Gender": "Male"}])
-    @pytest.fixture(params=HomePageData.getTestData("Testcase2"))
+    @pytest.fixture(params=HomePage.getTestData("Testcase2"))
     def getData(self, request):     #request is default object of fixture which automatically initilized when fixture is being executed
         return request.param
 
